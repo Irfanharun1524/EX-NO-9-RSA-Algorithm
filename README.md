@@ -37,51 +37,38 @@ The security of RSA relies on the difficulty of factoring large numbers; thus, c
 
 ## Program:
 ```
-#include <stdio.h> 
-#include <string.h> 
+p = 61
+q = 53
 
-int gcd(int a, int b) { return b ? gcd(b, a % b) : a; } 
-int modExp(int base, int exp, int mod) { 
-int res = 1; 
+n = p * q
+phi = (p - 1) * (q - 1)
 
-while (exp) { 
-    
-if (exp & 1) res = (res * base) % mod; 
-base = (base * base) % mod; 
-exp >>= 1; 
+e = 17
+d = 2753
 
-} 
-return res; 
-} 
+message = input("Enter plaintext: ")
 
-int modInv(int a, int m) { 
-int m0 = m, x0 = 0, x1 = 1; 
-while (a > 1) { 
-int q = a / m, t = m; 
-m = a % m; a = t; 
-t = x0; x0 = x1 - q * x0; x1 = t; 
-} 
-return x1 < 0 ? x1 + m0 : x1; 
-} 
+encrypted = []
 
-int main() { 
-    
-int p = 61, q = 53, n = p * q, phi = (p - 1) * (q - 1), e = 17; 
-while (gcd(e, phi) != 1) e++; 
-int d = modInv(e, phi); 
-char msg[100]; printf("Enter plaintext: "); scanf("%s", msg); 
-printf("Encrypted: "); for (int i = 0; msg[i]; i++) printf("%d ", modExp(msg[i], e, n)); 
-printf("\nDecrypted: "); for (int i = 0; msg[i]; i++) printf("%c", modExp(modExp(msg[i], e, n), d, n)); 
-return 0; 
+for ch in message:
+    encrypted.append(pow(ord(ch), e, n))
 
-} 
+print("Encrypted Message:", encrypted)
+
+decrypted = ""
+
+for num in encrypted:
+    decrypted += chr(pow(num, d, n))
+
+print("Decrypted Message:", decrypted)
+
+print("Program executed successfully")
 ```
 
 
 
 ## Output
-<img width="1158" height="924" alt="EXP 9" src="https://github.com/user-attachments/assets/187152f1-cfc3-4e06-bc4f-30eb8040403c" />
-
+<img width="322" height="61" alt="image" src="https://github.com/user-attachments/assets/2b348a13-2c0d-4ddf-8ac6-6798f567e347" />
 
 
 
